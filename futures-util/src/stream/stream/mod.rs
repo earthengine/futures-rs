@@ -48,7 +48,7 @@ pub use self::filter_map::FilterMap;
 mod flatten;
 
 delegate_all!(
-    /// Stream for the [`inspect`](StreamExt::inspect) method.
+    /// Stream for the [`flatten`](StreamExt::flatten) method.
     Flatten<St>(
         flatten::Flatten<St, St::Item>
     ): Debug + Sink + Stream + FusedStream + AccessInner[St, (.)] + New[|x: St| flatten::Flatten::new(x)]
@@ -611,7 +611,7 @@ pub trait StreamExt: Stream {
         FlatMap::new(self, f)
     }
 
-    /// Combinator similar to [`StreamExt::fold`] that holds internal state 
+    /// Combinator similar to [`StreamExt::fold`] that holds internal state
     /// and produces a new stream.
     ///
     /// Accepts initial state and closure which will be applied to each element
@@ -1231,8 +1231,8 @@ pub trait StreamExt: Stream {
     /// This method will panic if `capacity` is zero.
     #[cfg(feature = "alloc")]
     fn ready_chunks(self, capacity: usize) -> ReadyChunks<Self>
-        where
-            Self: Sized,
+    where
+        Self: Sized,
     {
         ReadyChunks::new(self, capacity)
     }
